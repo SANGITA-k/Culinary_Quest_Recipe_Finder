@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlavorQuest - Discover Amazing Recipes</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                    <h1>FlavorQuest</h1>
+                </div>
+                
+                <div class="search-container">
+                    <div class="search-box">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" id="searchInput" placeholder="Search for recipes, ingredients, or cuisines...">
+                    </div>
+                </div>
+
+                <div class="header-actions">
+                    <button class="favorites-btn" id="favoritesBtn">
+                        <i class="fas fa-heart"></i>
+                        <span class="favorites-count" id="favoritesCount">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <!-- Filter Sidebar -->
+        <aside class="filter-sidebar">
+            <h2>Filters</h2>
+            
+            <div class="filter-section">
+                <h3>Cuisine</h3>
+                <div class="filter-options" id="cuisineFilters">
+                    <label><input type="radio" name="cuisine" value="All" checked> All</label>
+                    <label><input type="radio" name="cuisine" value="Mediterranean"> Mediterranean</label>
+                    <label><input type="radio" name="cuisine" value="Thai"> Thai</label>
+                    <label><input type="radio" name="cuisine" value="American"> American</label>
+                    <label><input type="radio" name="cuisine" value="Modern"> Modern</label>
+                    <label><input type="radio" name="cuisine" value="Indian"> Indian</label>
+                    <label><input type="radio" name="cuisine" value="Italian"> Italian</label>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h3>Meal Type</h3>
+                <div class="filter-options" id="mealTypeFilters">
+                    <label><input type="radio" name="mealType" value="All" checked> All</label>
+                    <label><input type="radio" name="mealType" value="Breakfast"> Breakfast</label>
+                    <label><input type="radio" name="mealType" value="Lunch"> Lunch</label>
+                    <label><input type="radio" name="mealType" value="Dinner"> Dinner</label>
+                    <label><input type="radio" name="mealType" value="Snack"> Snack</label>
+                    <label><input type="radio" name="mealType" value="Dessert"> Dessert</label>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h3>Difficulty</h3>
+                <div class="filter-options" id="difficultyFilters">
+                    <label><input type="radio" name="difficulty" value="All" checked> All</label>
+                    <label><input type="radio" name="difficulty" value="Easy"> Easy</label>
+                    <label><input type="radio" name="difficulty" value="Medium"> Medium</label>
+                    <label><input type="radio" name="difficulty" value="Hard"> Hard</label>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h3>Cook Time</h3>
+                <div class="slider-container">
+                    <input type="range" id="cookTimeSlider" min="0" max="60" value="60" class="slider">
+                    <div class="slider-labels">
+                        <span>0 min</span>
+                        <span id="cookTimeValue">60 min</span>
+                        <span>60+ min</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h3>Dietary Preferences</h3>
+                <div class="dietary-tags" id="dietaryTags">
+                    <button class="tag-btn" data-tag="Vegetarian">Vegetarian</button>
+                    <button class="tag-btn" data-tag="Gluten-Free">Gluten-Free</button>
+                    <button class="tag-btn" data-tag="Healthy">Healthy</button>
+                    <button class="tag-btn" data-tag="Spicy">Spicy</button>
+                    <button class="tag-btn" data-tag="Quick">Quick</button>
+                    <button class="tag-btn" data-tag="Sweet">Sweet</button>
+                    <button class="tag-btn" data-tag="Baking">Baking</button>
+                    <button class="tag-btn" data-tag="Creamy">Creamy</button>
+                    <button class="tag-btn" data-tag="Fresh">Fresh</button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="content-header">
+                <h2>Discover Amazing Recipes</h2>
+                <p class="results-count" id="resultsCount">Found 6 recipes for you</p>
+            </div>
+
+            <div class="recipes-grid" id="recipesGrid">
+                <!-- Recipe cards will be dynamically inserted here -->
+            </div>
+
+            <div class="no-results" id="noResults" style="display: none;">
+                <div class="no-results-icon">🍳</div>
+                <h3>No recipes found</h3>
+                <p>Try adjusting your filters or search terms</p>
+            </div>
+        </main>
+    </div>
+
+    <!-- Recipe Modal -->
+    <div class="modal-overlay" id="recipeModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle"></h2>
+                <div class="modal-actions">
+                    <button class="favorite-btn" id="modalFavoriteBtn">
+                        <i class="fas fa-heart"></i>
+                    </button>
+                    <button class="close-btn" id="closeModal">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="modal-body">
+                <div class="modal-grid">
+                    <div class="modal-left">
+                        <img id="modalImage" src="" alt="">
+                        
+                        <div class="recipe-meta">
+                            <div class="meta-item">
+                                <i class="fas fa-clock"></i>
+                                <span id="modalCookTime"></span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="fas fa-users"></i>
+                                <span id="modalServings"></span>
+                            </div>
+                            <div class="difficulty-badge" id="modalDifficulty"></div>
+                        </div>
+                        
+                        <div class="recipe-rating">
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <span id="modalRating"></span>
+                                <span id="modalReviews"></span>
+                            </div>
+                        </div>
+                        
+                        <p id="modalDescription"></p>
+                        
+                        <div class="recipe-tags">
+                            <span class="cuisine-tag" id="modalCuisine"></span>
+                            <span class="meal-tag" id="modalMealType"></span>
+                        </div>
+                        
+                        <div class="dietary-tags-modal" id="modalDietaryTags"></div>
+                        
+                        <div class="recipe-author">
+                            <p>Created by <span id="modalAuthor"></span></p>
+                        </div>
+                    </div>
+                    
+                    <div class="modal-right">
+                        <div class="ingredients-section">
+                            <h3>Ingredients</h3>
+                            <ul id="modalIngredients"></ul>
+                        </div>
+                        
+                        <div class="instructions-section">
+                            <h3>Instructions</h3>
+                            <ol id="modalInstructions"></ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
